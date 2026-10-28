@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Olea — Table QR codes</title>
+<meta name="description" content="Printable QR cards for every table: guests scan, browse the menu and order on WhatsApp with their table number.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@500;700;800&family=Noto+Kufi+Arabic:wght@500;700&family=IBM+Plex+Sans+Arabic:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css?v=1">
+<style>
+  body { background: var(--bg-2); }
+  .tb-top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: .8rem; padding: 12px 16px; background: rgba(243, 235, 222, .92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .tb-top .brand { color: var(--ink); }
+  .tb-top .brand .mark { box-shadow: none; }
+  .tb-sp { flex: 1; }
+  .tb-langs { display: flex; gap: .2rem; padding: .2rem; border-radius: 12px; background: var(--card); border: 1px solid var(--line); }
+  .tb-langs button { height: 32px; padding: 0 .55rem; border: 0; border-radius: 9px; background: none; font: 800 .72rem var(--body); letter-spacing: .06em; color: var(--muted); }
+  .tb-langs button.on { background: var(--ink); color: #fff; }
+  .tb-open { display: inline-flex; align-items: center; gap: .4rem; height: 40px; padding: 0 .9rem; border-radius: 12px; background: var(--card); border: 1px solid var(--line); font-weight: 800; font-size: .86rem; text-decoration: none; }
+  .tb-open .i { width: 18px; height: 18px; }
+  .tb-intro { max-width: 1080px; margin: 0 auto; padding: 36px 16px 10px; }
+  .tb-intro h1 { margin: .5rem 0 .6rem; font: 600 clamp(2rem, 7vw, 3.2rem)/1.05 var(--display); letter-spacing: -.02em; }
+  :root[lang="ar"] .tb-intro h1 { font-weight: 700; letter-spacing: 0; line-height: 1.35; }
+  .tb-intro > p { max-width: 640px; color: var(--ink-2); }
+  .steps { display: grid; gap: 10px; margin: 24px 0 8px; counter-reset: s; }
+  .step { position: relative; display: flex; align-items: center; gap: .9rem; padding: 1rem 1.1rem; border-radius: 18px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow); animation: fadeUp .6s var(--ease) both; }
+  .step:nth-child(2) { animation-delay: .12s; } .step:nth-child(3) { animation-delay: .24s; }
+  .step-i { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 15px; background: var(--olive-soft); color: var(--olive); flex-shrink: 0; }
+  .step:nth-child(3) .step-i { background: var(--wa); color: #fff; }
+  .step b { font-weight: 800; }
+  .step::before { counter-increment: s; content: counter(s); position: absolute; top: 10px; inset-inline-end: 14px; font: 700 1.6rem var(--display); color: var(--line); }
+  .tb-bar { display: flex; flex-wrap: wrap; align-items: center; gap: .8rem; margin-top: 22px; }
+  .tb-bar .btn .i { width: 20px; height: 20px; }
+  .tb-url { font-size: .82rem; color: var(--muted); word-break: break-all; }
+  .cards { max-width: 1080px; margin: 0 auto; padding: 20px 16px 60px; display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 16px; }
+  .tcard { position: relative; display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 22px 18px 18px; border-radius: 26px; background: var(--bg); border: 1px solid var(--line); box-shadow: var(--shadow); text-decoration: none; color: var(--ink); text-align: center; overflow: hidden; transition: transform .25s var(--ease), box-shadow .25s; animation: fadeUp .5s var(--ease) both; }
+  .tcard:hover { transform: translateY(-4px); box-shadow: 0 30px 50px -30px rgba(43, 33, 24, .55); }
+  .tcard::before { content: ""; position: absolute; inset: 0 0 auto; height: 6px; background: linear-gradient(90deg, var(--olive), var(--olive-2) 50%, var(--gold)); }
+  .tc-brand { display: flex; align-items: center; gap: .45rem; font: 700 1.15rem var(--display); }
+  .tc-brand .mark { width: 28px; height: 28px; }
+  .tc-n { display: grid; line-height: 1; }
+  .tc-n small { font-size: .66rem; font-weight: 800; letter-spacing: .2em; text-transform: uppercase; color: var(--terra); }
+  :root[lang="ar"] .tc-n small { letter-spacing: 0; font-size: .8rem; }
+  .tc-n b { font: 700 3.4rem/1 var(--display); letter-spacing: -.02em; }
+  .tc-qr { width: 100%; max-width: 190px; padding: 8px; border-radius: 18px; background: #fff; box-shadow: 0 0 0 1px var(--line); }
+  .tc-qr .qr { width: 100%; height: auto; display: block; }
+  .tc-cta { font-weight: 800; font-size: .92rem; line-height: 1.3; }
+  .tc-ml { font-size: .7rem; color: var(--muted); line-height: 1.4; }
+  .tc-wa { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; font-weight: 800; color: var(--wa-2); }
+  .tc-wa .i { width: 14px; height: 14px; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tb-top, .tb-intro { display: none; }
+    .cards { max-width: none; padding: 0; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+    .tcard { break-inside: avoid; box-shadow: none; animation: none; border: 1px solid #d8ccb9; }
+  }
+</style>
+</head>
+<body>
+<header class="tb-top">
+  <a class="brand" href="index.html"><span class="mark" id="mk"></span><span class="brand-t"><b>Olea</b><small id="tg"></small></span></a>
+  <span class="tb-sp"></span>
+  <div class="tb-langs" id="langs"></div>
+  <a class="tb-open" id="open" href="index.html"></a>
+</header>
+<section class="tb-intro">
+  <p class="kick" id="kick"></p>
+  <h1 id="title"></h1>
+  <p id="sub"></p>
+  <div class="steps" id="steps"></div>
+  <div class="tb-bar"><button class="btn primary" id="print" type="button"></button><span class="tb-url" id="url"></span></div>
+</section>
+<main class="cards" id="cards"></main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="assets/data.js?v=1"></script>
+<script src="assets/qr.js?v=1"></script>
+<script src="assets/lang/en.js?v=1"></script>
+<script src="assets/lang/tr.js?v=1"></script>
+<script src="assets/lang/fr.js?v=1"></script>
+<script src="assets/lang/de.js?v=1"></script>
+<script src="assets/lang/ar.js?v=1"></script>
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const get = () => { try { return JSON.parse(localStorage.getItem('olea-lang')); } catch (e) { return null; } };
+  const qp = new URLSearchParams(location.search);
+  let lang = [qp.get('lang'), get(), 'en'].find((c) => c && PACK[c]);
+  const base = new URL('./', location.href).href;
+  const ico = (p) => `<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
+  const I = {
+    scan: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><path d="M14 14h3v3h-3zM18 18h3v3h-3zM14 20h2M20 14v2"/>',
+    menu: '<path d="M4 9h13v5a6 6 0 0 1-6 6h-1a6 6 0 0 1-6-6z"/><path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8.5 3c-.8 1 .8 2 0 3.2M12.5 3c-.8 1 .8 2 0 3.2"/>',
+    wa: '<path fill="currentColor" stroke="none" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.8 14.09c-.24.68-1.42 1.3-1.95 1.34-.5.05-.97.23-3.27-.68-2.77-1.09-4.52-3.92-4.66-4.1-.13-.18-1.11-1.48-1.11-2.83 0-1.34.7-2 .95-2.28.25-.27.54-.34.72-.34h.52c.17 0 .39-.06.61.47.24.56.79 1.92.86 2.06.07.14.11.3.02.48-.09.18-.14.3-.27.46-.14.16-.29.36-.41.48-.14.14-.28.29-.12.56.16.27.71 1.17 1.53 1.9 1.05.94 1.94 1.23 2.21 1.37.27.14.43.11.59-.07.16-.18.68-.79.86-1.07.18-.27.36-.23.61-.14.25.09 1.59.75 1.86.89.27.14.45.2.52.32.07.11.07.66-.17 1.33z"/>',
+    print: '<path d="M7 9V3h10v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M7 14h10v7H7z"/>',
+    arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  };
+  const multi = ['Menu', 'Menü', 'Carte', 'Speisekarte', 'القائمة'];
+  function render() {
+    const P = PACK[lang], T = P.tbl, lg = LANGS.find((l) => l.code === lang);
+    document.documentElement.lang = lang; document.documentElement.dir = lg.dir;
+    document.title = `Olea — ${T.title}`;
+    $('#mk').innerHTML = MARK; $('#tg').textContent = P.ui.tagline;
+    $('#langs').innerHTML = LANGS.map((l) => `<button type="button" class="${l.code === lang ? 'on' : ''}" data-l="${l.code}">${l.code.toUpperCase()}</button>`).join('');
+    $('#open').innerHTML = `${T.back}${ico(I.arrow)}`;
+    $('#kick').textContent = P.ui.owner.split('?')[0].split('؟')[0] + (lang === 'ar' ? '؟' : '?');
+    $('#title').textContent = T.title;
+    $('#sub').textContent = T.sub;
+    $('#steps').innerHTML = [[I.scan, T.s1], [I.menu, T.s2], [I.wa, T.s3]].map(([i, t]) => `<div class="step"><span class="step-i">${ico(i)}</span><b>${t}</b></div>`).join('');
+    $('#print').innerHTML = `${ico(I.print)}${T.print}`;
+    $('#url').textContent = base + '?t=1 … ?t=' + CAFE.tables;
+    let h = '';
+    for (let n = 1; n <= CAFE.tables; n++) {
+      const url = base + '?t=' + n;
+      h += `<a class="tcard" href="${url}" style="animation-delay:${Math.min(n, 12) * 35}ms">
+        <span class="tc-brand"><span class="mark">${MARK}</span>Olea</span>
+        <span class="tc-n"><small>${P.ui.table}</small><b>${String(n).padStart(2, '0')}</b></span>
+        <span class="tc-qr">${qrSvg(url, { logo: MARK })}</span>
+        <span class="tc-cta">${T.scan}</span>
+        <span class="tc-ml">${multi.join(' · ')}</span>
+        <span class="tc-wa">${ico(I.wa)}WhatsApp</span></a>`;
+    }
+    $('#cards').innerHTML = h;
+  }
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-l]');
+    if (b) { lang = b.dataset.l; try { localStorage.setItem('olea-lang', JSON.stringify(lang)); } catch (er) { /* ignore */ } render(); }
+    if (e.target.closest('#print')) window.print();
+  });
+  render();
+})();
+</script>
+</body>
+</html>
